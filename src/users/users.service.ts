@@ -4,18 +4,31 @@ import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser = new this.userModel(createUserDto);
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    const createdUser = new this.userModel({
+      ...createUserDto,
+      passwordHash: hashedPassword,
+    });
     return createdUser.save();
   }
 
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
+  }
+
+  async validatePassword(email: string, password: string): Promise<boolean> {
+    const user = await this.userModel.findOne({ email }).exec();
+    if (!user) {
+      return false;
+    }
+    return bcrypt.compare(password, user.passwordHash);
   }
 
   async findOne(id: string): Promise<User> {

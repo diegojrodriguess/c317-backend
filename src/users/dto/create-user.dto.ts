@@ -9,7 +9,7 @@ export class CreateUserDto {
 
   @IsString()
   @MinLength(6)
-  passwordHash: string;
+  password: string;
 
   @IsOptional()
   @IsInt()
