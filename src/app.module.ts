@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import mongoConfig from './config/mongo.config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { AudioModule } from './audio/audio.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UsersModule } from './users/users.module';
     }),
     AuthModule,
     UsersModule,
+    AudioModule,
   ],
   controllers: [AppController],
   providers: [AppService],

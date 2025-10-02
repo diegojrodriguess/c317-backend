@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste de Upload de Áudio - C317</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .upload-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin: 20px 0; }
+        .result { background: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>🎤 Teste de Upload de Áudio com IA</h1>
+    
+    <div class="upload-area">
+        <input type="file" id="audioFile" accept="audio/*">
+        <button onclick="uploadAudio()">Enviar Áudio</button>
+    </div>
+    
+    <div id="result" class="result" style="display:none;"></div>
+    
+    <script>
+        async function uploadAudio() {
+            const fileInput = document.getElementById('audioFile');
+            const resultDiv = document.getElementById('result');
+            
+            if (!fileInput.files[0]) {
+                alert('Selecione um arquivo de áudio primeiro!');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('audio', fileInput.files[0]);
+            
+            try {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '⏳ Processando áudio...';
+                
+                const response = await fetch('http://localhost:3000/audio/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <h3>✅ Sucesso!</h3>
+                        <p><strong>Arquivo:</strong> ${result.data.originalName}</p>
+                        <p><strong>Tamanho:</strong> ${(result.data.size / 1024).toFixed(2)} KB</p>
+                        <p><strong>Transcrição:</strong> ${result.data.transcription || 'N/A'}</p>
+                        <p><strong>Score:</strong> ${result.data.score || 'N/A'}</p>
+                        <p><strong>Processado em:</strong> ${result.data.processedAt}</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<h3>❌ Erro:</h3><p>${result.message}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<h3>❌ Erro:</h3><p>${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,99 +1,313 @@
+# 🎤 C317 Backend - API de Processamento de Áudio com IA
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API desenvolvida com NestJS para upload e processamento de arquivos de áudio utilizando Inteligência Artificial para análise de pronúncia e transcrição.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Funcionalidades
+
+- **Upload de Áudio**: Suporte para múltiplos formatos (MP3, WAV, OGG, M4A, FLAC)
+- **Processamento IA**: Integração com Python para análise de áudio
+- **Validação Robusta**: Verificação de tipo, tamanho e integridade dos arquivos
+- **API RESTful**: Endpoints bem estruturados com TypeScript
+- **Autenticação JWT**: Sistema de autenticação e autorização
+- **MongoDB**: Persistência de dados com Mongoose
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── audio/                    # 🎵 Módulo principal de áudio
+│   ├── audio_controller.ts   # Controller com validações
+│   ├── audio_service.ts      # Serviço de processamento
+│   ├── audio.module.ts       # Módulo organizacional  
+│   ├── config/
+│   │   └── audio.config.ts   # Configurações centralizadas
+│   └── dto/
+│       └── audio-upload.dto.ts # Interfaces TypeScript
+├── auth/                     # 🔐 Módulo de autenticação
+├── users/                    # 👥 Módulo de usuários
+├── config/                   # ⚙️ Configurações gerais
+└── main.ts                   # 🚪 Ponto de entrada
+
+ia/                          # 🤖 Scripts Python para IA
+└── process_audio.py         # Script de processamento
+
+uploads/                     # 📁 Arquivos enviados
+test-audio.html             # 🧪 Interface de teste (ver seção de testes)
+```
+
+## 🔧 Arquivos de Teste Criados
+
+### Interface Web de Teste (`test-audio.html`)
+Interface HTML simples para testar upload de áudio sem precisar do Postman:
+- Upload via drag & drop ou seleção de arquivo
+- Visualização de resultados em tempo real
+- Tratamento de erros amigável
+
+### Configuração Simplificada para Testes
+- `app-simple.module.ts`: Versão do AppModule sem MongoDB para testes rápidos
+- Configuração de CORS habilitada para testes locais
+- Logs informativos no console
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Sistema backend para análise de pronúncia e processamento de áudio com IA, desenvolvido sobre o framework [NestJS](https://github.com/nestjs/nest).
 
-## Project setup
+## 🛠️ Instalação e Configuração
 
+### Pré-requisitos
+- Node.js (v18 ou superior)
+- Python 3.8+ (para processamento de IA)
+- MongoDB (opcional, para funcionalidades completas)
+
+### Instalação
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+### Configuração do Ambiente
+1. Copie o arquivo `.env.example` para `.env`
+2. Configure as variáveis de ambiente:
+```env
+JWT_SECRET=your-secret-key
+MONGO_HOST=localhost
+MONGO_PORT=27017
+MONGO_USER=admin
+MONGO_PASS=password
+MONGO_DB=c317
 ```
 
-## Run tests
+## 🚀 Executando o Projeto
+
+### Modo Desenvolvimento (Recomendado)
+```bash
+npm run start:dev
+```
+
+### Modo Produção
+```bash
+npm run start:prod
+```
+
+### Modo Teste (Sem MongoDB)
+Para testar apenas o módulo de áudio sem dependências do MongoDB:
+```bash
+# O arquivo main.ts já está configurado para usar app-simple.module.ts
+npm run start:dev
+```
+
+## 🎤 API de Áudio
+
+### Endpoint Principal
+```http
+POST /audio/upload
+Content-Type: multipart/form-data
+
+Body:
+- audio: [arquivo de áudio]
+```
+
+### Formatos Suportados
+- MP3 (audio/mpeg)
+- WAV (audio/wav) 
+- OGG (audio/ogg)
+- M4A (audio/mp4)
+- FLAC (audio/flac)
+
+### Limites
+- Tamanho máximo: 50MB por arquivo
+- Tipos MIME validados automaticamente
+
+### Resposta de Sucesso
+```json
+{
+  "statusCode": 200,
+  "message": "Áudio enviado e processado com sucesso",
+  "data": {
+    "originalName": "audio.mp3",
+    "filename": "audio-1696248123456.mp3",
+    "size": 1024000,
+    "mimetype": "audio/mpeg",
+    "success": true,
+    "transcription": "Texto transcrito do áudio",
+    "score": 85.5,
+    "processedAt": "2025-10-02T16:56:51.789Z",
+    "audioMessage": "Áudio processado com sucesso"
+  }
+}
+```
+
+## 🧪 Testando a API
+
+### Método 1: Interface Web (Mais Fácil)
+1. Certifique-se de que o servidor está rodando (`npm run start:dev`)
+2. Abra o arquivo `test-audio.html` no seu navegador
+3. Selecione um arquivo de áudio
+4. Clique em "Enviar Áudio"
+5. Veja o resultado na tela!
+
+### Método 2: Postman
+1. Método: `POST`
+2. URL: `http://localhost:3000/audio/upload`
+3. Body: `form-data`
+4. Key: `audio` (tipo File)
+5. Value: Selecione um arquivo de áudio
+
+### Método 3: cURL
+```bash
+curl -X POST http://localhost:3000/audio/upload \
+  -F "audio=@caminho/para/seu/arquivo.mp3"
+```
+
+### Método 4: JavaScript/Fetch
+```javascript
+const formData = new FormData();
+formData.append('audio', audioFile);
+
+fetch('http://localhost:3000/audio/upload', {
+  method: 'POST',
+  body: formData
+})
+.then(response => response.json())
+.then(data => console.log(data));
+```
+
+## 🧪 Testes Automatizados
 
 ```bash
 # unit tests
-$ npm run test
+npm run test
 
 # e2e tests
-$ npm run test:e2e
+npm run test:e2e
 
 # test coverage
-$ npm run test:cov
+npm run test:cov
 ```
 
-## Deployment
+## 🐍 Configuração do Python para IA
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+O sistema utiliza Python para processamento de IA. O script está localizado em `ia/process_audio.py`.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### Testando o Script Python Isoladamente
 ```bash
-$ npm install -g mau
-$ mau deploy
+python ia/process_audio.py "caminho/para/arquivo.mp3"
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Personalizando o Processamento
+Edite o arquivo `ia/process_audio.py` para implementar sua lógica específica de:
+- Transcrição de áudio
+- Análise de pronúncia  
+- Cálculo de scores
+- Detecção de emoções
+- Outras análises de IA
 
-## Resources
+## 🔧 Troubleshooting
 
-Check out a few resources that may come in handy when working with NestJS:
+### Problema: Servidor não inicia
+**Solução**: Use a configuração simplificada sem MongoDB:
+- O arquivo `main.ts` já está configurado para usar `app-simple.module.ts`
+- Execute `npm run start:dev` normalmente
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Problema: Erro no script Python
+**Soluções**:
+1. Verifique se o Python está instalado: `python --version`
+2. Teste o script isoladamente: `python ia/process_audio.py`
+3. Instale dependências Python se necessário
 
-## Support
+### Problema: Upload falha
+**Verificações**:
+- Arquivo é realmente de áudio?
+- Tamanho menor que 50MB?
+- Formato suportado (MP3, WAV, OGG, M4A, FLAC)?
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Logs do Desenvolvimento
+O servidor em modo `start:dev` mostra logs detalhados:
+- ✅ `AudioModule dependencies initialized` = Módulo carregado
+- ✅ `Mapped {/audio/upload, POST} route` = Rota disponível
+- ✅ `Nest application successfully started` = Servidor rodando
 
-## Stay in touch
+## 🏗️ Arquitetura
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Fluxo de Processamento de Áudio
+1. **Upload** → Controller recebe arquivo via multipart/form-data
+2. **Validação** → Verifica tipo, tamanho e integridade
+3. **Armazenamento** → Salva arquivo na pasta `uploads/`
+4. **Processamento IA** → Chama script Python via spawn
+5. **Resposta** → Retorna JSON com metadados e análise
 
-## License
+### Tecnologias Utilizadas
+- **Backend**: NestJS + TypeScript
+- **Validação**: Multer + Custom validators
+- **IA**: Python (via child_process)
+- **Banco**: MongoDB + Mongoose
+- **Autenticação**: JWT + Passport
+- **Testes**: Jest + interface HTML customizada
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 📦 Deployment
+
+### Ambiente de Produção
+Para deploy em produção:
+
+1. Configure variáveis de ambiente
+2. Instale dependências Python no servidor
+3. Configure MongoDB
+4. Execute: `npm run start:prod`
+
+### Docker (Opcional)
+O projeto inclui `docker-compose.yaml` para containerização.
+
+## 📚 Recursos e Documentação
+
+### Documentação do Projeto
+- **AudioModule**: `src/audio/README.md` - Documentação específica do módulo de áudio
+- **Configurações**: `src/audio/config/audio.config.ts` - Todas as configurações centralizadas
+- **Interfaces**: `src/audio/dto/audio-upload.dto.ts` - Tipos TypeScript
+
+### Arquivos de Teste Incluídos
+- **Interface HTML**: `test-audio.html` - Teste interativo no navegador
+- **Script Python**: `ia/process_audio.py` - Processamento de IA customizável
+- **Config Simplificada**: `src/app-simple.module.ts` - Para testes sem MongoDB
+
+### NestJS Resources
+- [NestJS Documentation](https://docs.nestjs.com) - Documentação oficial
+- [NestJS Discord](https://discord.gg/G7Qnnhy) - Comunidade para suporte
+
+## 🚀 Status do Projeto
+
+### ✅ Funcionalidades Implementadas
+- Upload de múltiplos formatos de áudio
+- Validação robusta de arquivos
+- Integração com Python para IA
+- API RESTful com TypeScript
+- Sistema de configuração flexível
+- Interface de teste incluída
+
+### 🔧 Melhorias Futuras
+- Autenticação completa com JWT
+- Integração com banco de dados MongoDB
+- Testes automatizados mais abrangentes
+- Deploy com Docker
+- Dashboard de administração
+
+## 👥 Desenvolvimento
+
+Este projeto foi desenvolvido como parte do sistema C317 para análise de pronúncia e processamento de áudio com Inteligência Artificial.
+
+### Contribuindo
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
+
+## 📄 License
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+---
+
+**🎤 Desenvolvido para análise de pronúncia e processamento de áudio com IA**
