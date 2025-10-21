@@ -1,25 +1,41 @@
-import { IsString, IsEmail, IsOptional, IsArray, MinLength, IsInt } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsOptional,
+  IsArray,
+  MinLength,
+  IsInt,
+  Min,
+  Max,
+  IsIn,
+  ArrayNotEmpty,
+} from 'class-validator';
 
 export class CreateUserDto {
-  @IsString()
+  @IsString({ message: 'Name must be a string.' })
   name: string;
 
-  @IsEmail()
+  @IsEmail({}, { message: 'The provided email is invalid.' })
   email: string;
 
   @IsString()
-  @MinLength(6)
+  @MinLength(6, { message: 'Password must be at least 6 characters long.' })
   password: string;
 
   @IsOptional()
-  @IsInt()
+  @IsInt({ message: 'Age must be an integer.' })
+  @Min(0, { message: 'Age cannot be negative.' })
+  @Max(120, { message: 'Age cannot be greater than 120.' })
   age?: number;
 
   @IsOptional()
-  @IsString()
+  @IsIn(['leve', 'moderado', 'grave'], {
+    message: 'Speech difficulty type must be leve, moderado, or grave.',
+  })
   speechDifficultyType?: string;
 
   @IsOptional()
-  @IsArray()
+  @IsArray({ message: 'Roles must be an array.' })
+  @ArrayNotEmpty({ message: 'Roles array cannot be empty.' })
   roles?: string[];
 }
