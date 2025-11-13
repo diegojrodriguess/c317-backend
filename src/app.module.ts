@@ -21,9 +21,16 @@ import { AudioModule } from './audio/audio.module';
       useFactory: (configService: ConfigService) => {
         const host = configService.get<string>('mongo.host');
         const port = configService.get<number>('mongo.port');
+        const dbName = configService.get<string>('mongo.dbName');
         const user = configService.get<string>('mongo.user');
         const pass = configService.get<string>('mongo.pass');
-        const dbName = configService.get<string>('mongo.dbName');
+
+        // Se não tiver user/pass, conecta sem autenticação
+        if (!user || !pass) {
+          return {
+            uri: `mongodb://${host}:${port}/${dbName}`,
+          };
+        }
 
         return {
           uri: `mongodb://${user}:${pass}@${host}:${port}/${dbName}?authSource=admin`,
