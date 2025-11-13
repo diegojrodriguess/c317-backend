@@ -51,6 +51,8 @@ export class AudioController {
         })
     )
     async uploadAudio(@UploadedFile() file: any): Promise<AudioUploadResponse> {
+        console.log("REQ FILE >>>", file);
+        
         // Verificar se o arquivo foi enviado
         if (!file) {
             throw new BadRequestException('Nenhum arquivo de áudio foi enviado');
