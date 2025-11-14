@@ -11,6 +11,7 @@ export interface AudioUploadResponse {
         score?: number;
         processedAt: string;
         audioMessage?: string;
+        pdf?: string;
     };
 }
 
@@ -20,4 +21,7 @@ export interface ProcessedAudioResult {
     score?: number;
     message?: string;
     processedAt: string;
+    errors?: string[];
+    suggestions?: string[];
+    highlights?: any;
 }
