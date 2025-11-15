@@ -137,6 +137,7 @@ export class AudioController {
                 }
             };
         } catch (error) {
+            console.log(error)
             throw new BadRequestException(`Erro ao processar áudio: ${error.message}`);
         }
     }
