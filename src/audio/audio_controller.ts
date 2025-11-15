@@ -58,18 +58,13 @@ export class AudioController {
             }
         })
     )
-<<<<<<< Updated upstream
-    async uploadAudio(@UploadedFile() file: any): Promise<AudioUploadResponse> {
-=======
     async uploadAudio(
         @UploadedFile() file: any,
         @Body('user_id') user_id?: string,
         @Body('target_word') target_word?: string,
         @Body('provider') provider: string = 'gemini',
     ): Promise<AudioUploadResponse> {
-        console.log("REQ FILE >>>", file);
-        
->>>>>>> Stashed changes
+        // console.log("REQ FILE >>>", file);
         // Verificar se o arquivo foi enviado
         if (!file) {
             throw new BadRequestException('Nenhum arquivo de áudio foi enviado');
@@ -87,7 +82,7 @@ export class AudioController {
 
         try {
             // Processar o áudio através do serviço (passando target_word/provider quando disponíveis)
-            const result = await this.audioService.processAudio(file.path, { targetWord: target_word, provider });
+            const result = await this.audioService.processAudio(file.path, { targetWord: target_word, provider, userId: user_id });
 
             // Salvar consulta no banco
             const saved = await this.consultationService.saveConsultation({
