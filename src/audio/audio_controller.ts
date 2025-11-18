@@ -64,7 +64,7 @@ export class AudioController {
         @Body('target_word') target_word?: string,
         @Body('provider') provider: string = 'gemini',
     ): Promise<AudioUploadResponse> {
-        // console.log("REQ FILE >>>", file);
+        console.log("REQ FILE >>>", file);
         // Verificar se o arquivo foi enviado
         if (!file) {
             throw new BadRequestException('Nenhum arquivo de áudio foi enviado');
@@ -137,6 +137,7 @@ export class AudioController {
                 }
             };
         } catch (error) {
+            console.log(error)
             throw new BadRequestException(`Erro ao processar áudio: ${error.message}`);
         }
     }
