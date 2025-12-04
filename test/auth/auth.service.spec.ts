@@ -59,6 +59,7 @@ describe('AuthService', () => {
     expect(jwtService.sign).toHaveBeenCalledWith({
       sub: mockUser._id.toString(),
       email: mockUser.email,
+      name: mockUser.name,
     });
     expect(result).toEqual({ access_token: 'mocked_jwt_token' });
   });

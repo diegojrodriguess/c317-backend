@@ -22,7 +22,7 @@ export class AuthService {
       userDto.age = Number(dto.age);
     }
     const user = await this.usersService.create(userDto);
-    return this.generateToken(user._id.toString(), user.email);
+    return this.generateToken(user._id.toString(), user.email, user.name);
   }
 
   async login(dto: LoginAuthDto) {
@@ -31,11 +31,11 @@ export class AuthService {
     if (!user || !(await this.usersService.validatePassword(user.email, dto.password))) {
       throw new UnauthorizedException('Credenciais inválidas');
     }
-    return this.generateToken(user._id.toString(), user.email);
+    return this.generateToken(user._id.toString(), user.email, user.name);
   }
 
-  private generateToken(userId: string, email: string) {
-    const payload = { sub: userId, email };
+  private generateToken(userId: string, email: string, name?: string) {
+    const payload = { sub: userId, email, name };
     return {
       access_token: this.jwtService.sign(payload),
     };
