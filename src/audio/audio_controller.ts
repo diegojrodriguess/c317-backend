@@ -6,7 +6,8 @@ import {
     BadRequestException,
     HttpStatus,
     HttpCode,
-    Body
+    Body,
+    UseGuards
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -17,6 +18,7 @@ import { audioConfig } from './config/audio.config';
 import { ConsultationService } from './consultation.service';
 import { PdfService } from './pdf.service';
 import { Get, Param } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('audio')
 export class AudioController {
@@ -26,6 +28,7 @@ export class AudioController {
         private readonly pdfService: PdfService,
     ) {}
 
+    @UseGuards(AuthGuard('jwt'))
     @Post('upload')
     @HttpCode(HttpStatus.OK)
     @UseInterceptors(
@@ -144,6 +147,7 @@ export class AudioController {
         }
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Get('history/:userId')
     async getHistory(@Param('userId') userId: string) {
         return this.consultationService.getHistoryForUser(userId);
