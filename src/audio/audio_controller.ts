@@ -131,8 +131,10 @@ export class AudioController {
                     success: result.success,
                     transcription: result.transcription,
                     score: result.score,
+                    feedback: result.message,
+                    match: typeof result.match !== 'undefined' ? result.match : undefined,
+                    evaluation: result.evaluation,
                     processedAt: result.processedAt,
-                    audioMessage: result.message,
                     pdf: pdfPath
                 }
             };

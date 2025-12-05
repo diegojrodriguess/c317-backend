@@ -9,8 +9,10 @@ export interface AudioUploadResponse {
         success: boolean;
         transcription?: string;
         score?: number;
+        feedback?: string;
+        match?: boolean;
+        evaluation?: string;
         processedAt: string;
-        audioMessage?: string;
         pdf?: string;
     };
 }
@@ -20,6 +22,8 @@ export interface ProcessedAudioResult {
     transcription?: string;
     score?: number;
     message?: string;
+    match?: boolean;
+    evaluation?: string;
     processedAt: string;
     errors?: string[];
     suggestions?: string[];

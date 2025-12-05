@@ -10,6 +10,8 @@ interface AudioProcessResult {
   transcription?: string;
   score?: number;
   message?: string;
+  match?: boolean;
+  evaluation?: string;
   processedAt: string;
   // Campos adicionais que podem vir do processamento IA
   errors?: string[];
@@ -50,6 +52,8 @@ export class AudioService {
           transcription: data.predicted || data.transcription || '',
           score: typeof data.score === 'number' ? data.score : 0,
           message: data.feedback || 'Áudio processado com sucesso',
+          match: typeof data.match !== 'undefined' ? Boolean(data.match) : undefined,
+          evaluation: data.evaluation || data.assessment || undefined,
           processedAt: new Date().toISOString(),
           errors: data.errors || [],
           suggestions: data.suggestions || [],
@@ -86,6 +90,8 @@ export class AudioService {
                 transcription: parsedResult.transcription,
                 score: parsedResult.score,
                 message: parsedResult.message || 'Áudio processado com sucesso',
+                match: typeof parsedResult.match !== 'undefined' ? Boolean(parsedResult.match) : undefined,
+                evaluation: parsedResult.evaluation || parsedResult.assessment || undefined,
                 processedAt: new Date().toISOString(),
                 errors: parsedResult.errors || [],
                 suggestions: parsedResult.suggestions || [],
